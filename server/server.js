@@ -1,16 +1,16 @@
+
+
+const _ = require('lodash');
 const express = require('express');
 const bodyparser = require('body-parser');
 const { ObjectID } = require('mongodb');
-const _ = require('lodash');
 
 var { mongoose } = require('./db/mongoose');
 var { Todo } = require('./models/todo');
 var { User } = require('./models/user');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 var app = express();
-
-
 
 app.use(bodyparser.json());
 
@@ -73,7 +73,7 @@ app.delete('/todos/:id', (req, res) => {
 
 
 app.patch('/todos/:id', (req, res) => {
-    var id = req.params.id;    
+    var id = req.params.id;
     var body = _.pick(req.body, ["text", "completed"]);
 
     if (!ObjectID.isValid(id)) {
@@ -93,7 +93,7 @@ app.patch('/todos/:id', (req, res) => {
             return res.status(404).send();
         }
 
-        res.send({todo});
+        res.send({ todo });
     }).catch((err) => {
         res.status(400).send();
     });
